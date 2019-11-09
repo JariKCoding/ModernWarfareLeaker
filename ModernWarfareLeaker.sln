@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModernWarfareLeaker.Library", "ModernWarfareLeaker.Library\ModernWarfareLeaker.Library.csproj", "{A0138DEC-74BF-4BCE-95E2-C6E361BC095F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModernWarfareLeaker.UI", "ModernWarfareLeaker.UI\ModernWarfareLeaker.UI.csproj", "{11FA6720-1CF5-4512-8F99-8EE04D0707A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhilLibX", "PhilLibX\PhilLibX.csproj", "{7101247D-6ABE-448F-8E5C-ABE066155C3F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A0138DEC-74BF-4BCE-95E2-C6E361BC095F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0138DEC-74BF-4BCE-95E2-C6E361BC095F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0138DEC-74BF-4BCE-95E2-C6E361BC095F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0138DEC-74BF-4BCE-95E2-C6E361BC095F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11FA6720-1CF5-4512-8F99-8EE04D0707A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11FA6720-1CF5-4512-8F99-8EE04D0707A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11FA6720-1CF5-4512-8F99-8EE04D0707A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11FA6720-1CF5-4512-8F99-8EE04D0707A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7101247D-6ABE-448F-8E5C-ABE066155C3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7101247D-6ABE-448F-8E5C-ABE066155C3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7101247D-6ABE-448F-8E5C-ABE066155C3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7101247D-6ABE-448F-8E5C-ABE066155C3F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
