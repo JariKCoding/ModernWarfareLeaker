@@ -21,4 +21,4 @@ Just have Modern Warfare open and run the exe that is provided
 - Scobalula - Utilities and Hydrax as a base for some classes
 
 # License 
-ModernWarfareLeaker is licensed under the MIT license and its source code is free to use and modify. ModernWarfareLeaker comes with NO warranty, any damages caused are solely the responsibility of the user. See the LICENSE file for more information.
+ModernWarfareLeaker is licensed under the GPL license and its source code is free to use and modify. ModernWarfareLeaker comes with NO warranty, any damages caused are solely the responsibility of the user. See the LICENSE file for more information.
