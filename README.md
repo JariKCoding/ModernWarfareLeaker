@@ -1,5 +1,5 @@
 # ModernWarfareLeaker
-Dumps files from memory from Call of Duty: Modern Warfare
+Dumps files from memory from Call of Duty: Modern Warfare | Educational Purposes only
 
 # Dumps the following files
 * StringTables
