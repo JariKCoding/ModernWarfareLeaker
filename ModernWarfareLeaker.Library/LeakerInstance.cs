@@ -87,9 +87,12 @@ namespace ModernWarfareLeaker.Library
 
             foreach (var pool in pools)
                 if (!pool.IsInterface)
-                    if (pool.DeclaringType is Type gameType)
+                {
+                    if (pool.DeclaringType is Type gameType/* && pool.Name == "ScriptFile"*/)
                         if (gameType == game.GetType())
                             results.Add((IAssetPool)Activator.CreateInstance(pool));
+                }
+                    
 
             return results;
         }

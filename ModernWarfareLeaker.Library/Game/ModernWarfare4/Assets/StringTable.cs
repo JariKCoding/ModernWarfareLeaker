@@ -28,13 +28,10 @@ namespace ModernWarfareLeaker.Library
                 public long StringsPtr;
             }
             #endregion
-            public string Name => "stringtable";
-            public int Index => (int) AssetPool.stringtable;
-            public int AssetSize { get; set; }
-            public int AssetCount { get; set; }
-            public long StartAddress { get; set; }
-            public long EndAddress { get { return StartAddress + (AssetCount * AssetSize); } set => throw new NotImplementedException(); }
-            public List<GameAsset> Load(LeakerInstance instance)
+            public override string Name => "stringtable";
+            public override int Index => (int) AssetPool.stringtable;
+            public override long EndAddress { get { return StartAddress + (AssetCount * AssetSize); } set => throw new NotImplementedException(); }
+            public override List<GameAsset> Load(LeakerInstance instance)
             {
                 var results = new List<GameAsset>();
 
@@ -64,7 +61,7 @@ namespace ModernWarfareLeaker.Library
                 return results;
             }
 
-            public LeakerStatus Export(GameAsset asset, LeakerInstance instance)
+            public override LeakerStatus Export(GameAsset asset, LeakerInstance instance)
             {
                 var header = instance.Reader.ReadStruct<StringTableAsset>(asset.HeaderAddress);
                 
@@ -97,16 +94,6 @@ namespace ModernWarfareLeaker.Library
                 File.WriteAllText(path, result.ToString());
                 
                 return LeakerStatus.Success;
-            }
-
-            public bool IsNullAsset(GameAsset asset)
-            {
-                return IsNullAsset(asset.NameLocation);
-            }
-
-            public bool IsNullAsset(long nameAddress)
-            {
-                return nameAddress >= StartAddress && nameAddress <= AssetCount * AssetSize + StartAddress || nameAddress == 0;
             }
         }
     }

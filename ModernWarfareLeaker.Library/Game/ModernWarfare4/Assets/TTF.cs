@@ -8,22 +8,22 @@ namespace ModernWarfareLeaker.Library
 {
     public partial class ModernWarfare4
     {
-        public class LuaFile : IAssetPool
+        public class TTF : IAssetPool
         {
             #region AssetStructures
             /// <summary>
-            /// Lua File Asset Structure
+            /// TTF Asset Structure
             /// </summary>
-            private struct LuaFileAsset
+            private struct TTFAsset
             {
                 public long NamePointer;
                 public int AssetSize;
-                public int Unk;
                 public long RawDataPtr;
+                public int Unk;
             }
             #endregion
-            public override string Name => "luafile";
-            public override int Index => (int) AssetPool.luafile;
+            public override string Name => "ttf";
+            public override int Index => (int) AssetPool.ttf;
             public override long EndAddress { get { return StartAddress + (AssetCount * AssetSize); } set => throw new NotImplementedException(); }
             public override List<GameAsset> Load(LeakerInstance instance)
             {
@@ -37,7 +37,7 @@ namespace ModernWarfareLeaker.Library
 
                 for (int i = 0; i < AssetCount; i++)
                 {
-                    var header = instance.Reader.ReadStruct<LuaFileAsset>(StartAddress + (i * AssetSize));
+                    var header = instance.Reader.ReadStruct<TTFAsset>(StartAddress + (i * AssetSize));
 
                     if (IsNullAsset(header.NamePointer))
                         continue;
@@ -57,7 +57,7 @@ namespace ModernWarfareLeaker.Library
 
             public override LeakerStatus Export(GameAsset asset, LeakerInstance instance)
             {
-                var header = instance.Reader.ReadStruct<LuaFileAsset>(asset.HeaderAddress);
+                var header = instance.Reader.ReadStruct<TTFAsset>(asset.HeaderAddress);
                 
                 if (asset.Name != instance.Reader.ReadNullTerminatedString(header.NamePointer))
                     return LeakerStatus.MemoryChanged;

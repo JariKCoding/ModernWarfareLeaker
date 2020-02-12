@@ -12,12 +12,13 @@ namespace ModernWarfareLeaker.UI
         
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("ModernWarfareLeaker by JariK");
+
             var status = Instance.LoadGame();
 
             foreach (var asset in Instance.Assets)
             {
-                if (asset.AssetPool.Name == "sound")
+                if (asset.AssetPool.Name != "weapon")
                 {
                     asset.AssetPool.Export(asset, Instance);
                 }

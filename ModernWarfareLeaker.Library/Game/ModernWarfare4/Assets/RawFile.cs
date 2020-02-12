@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -8,22 +9,22 @@ namespace ModernWarfareLeaker.Library
 {
     public partial class ModernWarfare4
     {
-        public class LuaFile : IAssetPool
+        public class RawFile : IAssetPool
         {
             #region AssetStructures
             /// <summary>
-            /// Lua File Asset Structure
+            /// RawFile Asset Structure
             /// </summary>
-            private struct LuaFileAsset
+            private struct RawFileAsset
             {
                 public long NamePointer;
-                public int AssetSize;
-                public int Unk;
+                public int compressedLength;
+                public int len;
                 public long RawDataPtr;
             }
             #endregion
-            public override string Name => "luafile";
-            public override int Index => (int) AssetPool.luafile;
+            public override string Name => "rawfile";
+            public override int Index => (int) AssetPool.rawfile;
             public override long EndAddress { get { return StartAddress + (AssetCount * AssetSize); } set => throw new NotImplementedException(); }
             public override List<GameAsset> Load(LeakerInstance instance)
             {
@@ -37,7 +38,7 @@ namespace ModernWarfareLeaker.Library
 
                 for (int i = 0; i < AssetCount; i++)
                 {
-                    var header = instance.Reader.ReadStruct<LuaFileAsset>(StartAddress + (i * AssetSize));
+                    var header = instance.Reader.ReadStruct<RawFileAsset>(StartAddress + (i * AssetSize));
 
                     if (IsNullAsset(header.NamePointer))
                         continue;
@@ -48,7 +49,7 @@ namespace ModernWarfareLeaker.Library
                         HeaderAddress = StartAddress + (i * AssetSize),
                         AssetPool = this,
                         Type = Name,
-                        Information = string.Format("Size: 0x{0:X}", header.AssetSize)
+                        Information = string.Format("Size: 0x{0:X}", header.len)
                     });
                 }
                 
@@ -57,7 +58,7 @@ namespace ModernWarfareLeaker.Library
 
             public override LeakerStatus Export(GameAsset asset, LeakerInstance instance)
             {
-                var header = instance.Reader.ReadStruct<LuaFileAsset>(asset.HeaderAddress);
+                var header = instance.Reader.ReadStruct<RawFileAsset>(asset.HeaderAddress);
                 
                 if (asset.Name != instance.Reader.ReadNullTerminatedString(header.NamePointer))
                     return LeakerStatus.MemoryChanged;
@@ -67,11 +68,37 @@ namespace ModernWarfareLeaker.Library
                 // Create path
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 
-                byte[] buffer = instance.Reader.ReadBytes(header.RawDataPtr, (int)header.AssetSize);
+                MemoryStream DecodedCodeStream = Decode(instance.Reader.ReadBytes(header.RawDataPtr + 2, header.compressedLength - 2));
 
-                File.WriteAllBytes(path, buffer);
-                
+                try
+                {
+                    using (var outputStream = new FileStream(path, FileMode.Create))
+                    {
+                        DecodedCodeStream.CopyTo(outputStream);
+                    }
+                }
+                catch
+                {
+                    return LeakerStatus.Exception;
+                }
+
                 return LeakerStatus.Success;
+            }
+
+            public static MemoryStream Decode(byte[] data)
+            {
+                MemoryStream output = new MemoryStream();
+                MemoryStream input = new MemoryStream(data);
+
+                using (DeflateStream deflateStream = new DeflateStream(input, CompressionMode.Decompress))
+                {
+                    deflateStream.CopyTo(output);
+                }
+
+                output.Flush();
+                output.Position = 0;
+
+                return output;
             }
         }
     }

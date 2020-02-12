@@ -8,22 +8,21 @@ namespace ModernWarfareLeaker.Library
 {
     public partial class ModernWarfare4
     {
-        public class LuaFile : IAssetPool
+        public class MapEnts : IAssetPool
         {
             #region AssetStructures
             /// <summary>
-            /// Lua File Asset Structure
+            /// TTF Asset Structure
             /// </summary>
-            private struct LuaFileAsset
+            private struct MapEntsAsset
             {
                 public long NamePointer;
-                public int AssetSize;
-                public int Unk;
                 public long RawDataPtr;
             }
             #endregion
-            public override string Name => "luafile";
-            public override int Index => (int) AssetPool.luafile;
+            public override string Name => "mapents";
+            public override int Index => (int) AssetPool.map_ents;
+            
             public override long EndAddress { get { return StartAddress + (AssetCount * AssetSize); } set => throw new NotImplementedException(); }
             public override List<GameAsset> Load(LeakerInstance instance)
             {
@@ -37,18 +36,18 @@ namespace ModernWarfareLeaker.Library
 
                 for (int i = 0; i < AssetCount; i++)
                 {
-                    var header = instance.Reader.ReadStruct<LuaFileAsset>(StartAddress + (i * AssetSize));
+                    var header = instance.Reader.ReadStruct<MapEntsAsset>(StartAddress + (i * AssetSize));
 
                     if (IsNullAsset(header.NamePointer))
                         continue;
-
+                    
                     results.Add(new GameAsset()
                     {
                         Name = instance.Reader.ReadNullTerminatedString(header.NamePointer),
                         HeaderAddress = StartAddress + (i * AssetSize),
                         AssetPool = this,
                         Type = Name,
-                        Information = string.Format("Size: 0x{0:X}", header.AssetSize)
+                        Information = "N/A"
                     });
                 }
                 
@@ -57,7 +56,7 @@ namespace ModernWarfareLeaker.Library
 
             public override LeakerStatus Export(GameAsset asset, LeakerInstance instance)
             {
-                var header = instance.Reader.ReadStruct<LuaFileAsset>(asset.HeaderAddress);
+                var header = instance.Reader.ReadStruct<MapEntsAsset>(asset.HeaderAddress);
                 
                 if (asset.Name != instance.Reader.ReadNullTerminatedString(header.NamePointer))
                     return LeakerStatus.MemoryChanged;
@@ -67,9 +66,7 @@ namespace ModernWarfareLeaker.Library
                 // Create path
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 
-                byte[] buffer = instance.Reader.ReadBytes(header.RawDataPtr, (int)header.AssetSize);
-
-                File.WriteAllBytes(path, buffer);
+                File.WriteAllText(path, instance.Reader.ReadNullTerminatedString(header.RawDataPtr));
                 
                 return LeakerStatus.Success;
             }

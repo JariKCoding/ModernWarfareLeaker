@@ -2,12 +2,12 @@
 
 namespace ModernWarfareLeaker.Library
 {
-    public interface IAssetPool
+    public abstract class IAssetPool
     {
         /// <summary>
         /// Gets the Asset Pool Name
         /// </summary>
-        string Name { get; }
+        public abstract string Name { get; }
 
         /// <summary>
         /// Gets the Setting Group for this Asset Pool
@@ -17,46 +17,52 @@ namespace ModernWarfareLeaker.Library
         /// <summary>
         /// Gets the Asset Pool Index
         /// </summary>
-        int Index { get; }
+        public abstract int Index { get; }
 
         /// <summary>
         /// Gets the Asset Header Size
         /// </summary>
-        int AssetSize { get; set; }
+        public int AssetSize { get; set; }
 
         /// <summary>
         /// Gets or Sets the number of Asset slots in this pool
         /// </summary>
-        int AssetCount { get; set; }
+        public int AssetCount { get; set; }
 
         /// <summary>
         /// Gets or Sets the start Address of this pool
         /// </summary>
-        long StartAddress { get; set; }
+        public long StartAddress { get; set; }
 
         /// <summary>
         /// Gets or Sets the end Address of this pool
         /// </summary>
-        long EndAddress { get; set; }
+        public abstract long EndAddress { get; set; }
 
         /// <summary>
         /// Loads Assets from the given Asset Pool
         /// </summary>
-        List<GameAsset> Load(LeakerInstance instance);
+        public abstract List<GameAsset> Load(LeakerInstance instance);
 
         /// <summary>
         /// Exports the given asset from the game
         /// </summary>
-        LeakerStatus Export(GameAsset asset, LeakerInstance instance);
+        public abstract LeakerStatus Export(GameAsset asset, LeakerInstance instance);
 
         /// <summary>
         /// Checks if the given asset is null
         /// </summary>
-        bool IsNullAsset(GameAsset asset);
+        public bool IsNullAsset(GameAsset asset)
+        {
+            return IsNullAsset(asset.NameLocation);
+        }
 
         /// <summary>
         /// Checks if the given pointer points to a null slot
         /// </summary>
-        bool IsNullAsset(long nameAddress);
+        public bool IsNullAsset(long nameAddress)
+        {
+            return nameAddress >= StartAddress && nameAddress <= AssetCount * AssetSize + StartAddress || nameAddress == 0;
+        }
     }
 }

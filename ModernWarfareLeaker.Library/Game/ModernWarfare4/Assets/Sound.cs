@@ -37,13 +37,10 @@ namespace ModernWarfareLeaker.Library
                 public long FileSpec { get; set; }
             }
             #endregion
-            public string Name => "sound";
-            public int Index => (int) AssetPool.soundbank;
-            public int AssetSize { get; set; }
-            public int AssetCount { get; set; }
-            public long StartAddress { get; set; }
-            public long EndAddress { get; set; }
-            public List<GameAsset> Load(LeakerInstance instance)
+            public override string Name => "sound";
+            public override int Index => (int) AssetPool.soundbank;
+            public override long EndAddress { get; set; }
+            public override List<GameAsset> Load(LeakerInstance instance)
             {
                 var results = new List<GameAsset>();
 
@@ -73,11 +70,10 @@ namespace ModernWarfareLeaker.Library
                     }
                 }
                 
-
                 return results;
             }
 
-            public LeakerStatus Export(GameAsset asset, LeakerInstance instance)
+            public override LeakerStatus Export(GameAsset asset, LeakerInstance instance)
             {
                 var header = instance.Reader.ReadStruct<SoundAsset>(asset.HeaderAddress);
 
@@ -104,16 +100,6 @@ namespace ModernWarfareLeaker.Library
                 }
                 
                 return LeakerStatus.Success;
-            }
-
-            public bool IsNullAsset(GameAsset asset)
-            {
-                return IsNullAsset(asset.NameLocation);
-            }
-
-            public bool IsNullAsset(long nameAddress)
-            {
-                return nameAddress >= StartAddress && nameAddress <= AssetCount * AssetSize + StartAddress || nameAddress == 0;
             }
         }
     }
