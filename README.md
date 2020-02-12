@@ -12,7 +12,8 @@ Dumps files from memory from Call of Duty: Modern Warfare | Educational Purposes
 * Fonts
 
 # How to use it
-Just have Modern Warfare open and run the exe that is provided
+* Download the zip that is in the [releases section](https://github.com/JariKCoding/ModernWarfareLeaker/releases)
+* Just have Modern Warfare open and run the exe that is provided
 
 ## Requirements
 * .NET Core 3.0
